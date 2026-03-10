@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps Vibes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=IBM+Plex+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg-1: #0b1a2a;
+            --bg-2: #11304a;
+            --bg-3: #173f5f;
+            --card: rgba(255, 255, 255, 0.1);
+            --text: #f8fbff;
+            --muted: #d5e6f6;
+            --accent: #ffb703;
+            --accent-2: #fb5607;
+            --ok: #80ed99;
+            --shadow: rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "IBM Plex Sans", sans-serif;
+            color: var(--text);
+            background: linear-gradient(120deg, var(--bg-1), var(--bg-2), var(--bg-3));
+            background-size: 240% 240%;
+            animation: bgFlow 16s ease infinite;
+            overflow-x: hidden;
+        }
+
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .blob {
+            position: absolute;
+            width: 28vmax;
+            height: 28vmax;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.3;
+            animation: drift 14s ease-in-out infinite;
+        }
+
+        .blob.one {
+            background: #2ec4b6;
+            left: -8vmax;
+            top: -10vmax;
+        }
+
+        .blob.two {
+            background: #ffd166;
+            right: -10vmax;
+            top: 20%;
+            animation-delay: -5s;
+        }
+
+        .blob.three {
+            background: #ef476f;
+            left: 25%;
+            bottom: -12vmax;
+            animation-delay: -9s;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 3rem 1.2rem 2rem;
+        }
+
+        .hero {
+            backdrop-filter: blur(6px);
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 22px;
+            box-shadow: 0 18px 44px var(--shadow);
+            padding: 2rem;
+            transform: translateY(16px);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        h1 {
+            margin: 0 0 1rem;
+            font-family: "Abril Fatface", serif;
+            font-size: clamp(2.2rem, 4.2vw, 4rem);
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+            text-wrap: balance;
+        }
+
+        .lead {
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            color: var(--muted);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 1rem;
+            transform: translateY(16px);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.35s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.65s;
+        }
+
+        .card h2 {
+            margin: 0 0 0.45rem;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        .card p {
+            margin: 0;
+            color: #f1f7ff;
+            line-height: 1.5;
+            font-size: 0.96rem;
+        }
+
+        .tool-belt {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            transform: translateY(16px);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        .pill {
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 0.4rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.86rem;
+            font-weight: 600;
+        }
+
+        .fun-zone {
+            margin-top: 1.4rem;
+            min-height: 120px;
+            border-radius: 16px;
+            border: 1px dashed rgba(255, 255, 255, 0.35);
+            background: rgba(0, 0, 0, 0.15);
+            position: relative;
+            padding: 1rem;
+            overflow: hidden;
+            transform: translateY(16px);
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards;
+            animation-delay: 0.95s;
+        }
+
+        #funnyBtn {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            border: 0;
+            border-radius: 14px;
+            background: linear-gradient(140deg, var(--accent), var(--accent-2));
+            color: #1b1b1b;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.3);
+            transition: transform 0.18s ease;
+        }
+
+        #funnyBtn:hover {
+            transform: rotate(-2deg) scale(1.04);
+        }
+
+        #funnyBtn.wiggle {
+            animation: wiggle 0.45s ease;
+        }
+
+        #status {
+            margin-top: 3.7rem;
+            color: var(--ok);
+            font-weight: 600;
+            min-height: 1.3rem;
+        }
+
+        @media (max-width: 780px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 1.2rem;
+            }
+
+            #funnyBtn {
+                position: static;
+                margin-bottom: 0.8rem;
+            }
+
+            #status {
+                margin-top: 0;
+            }
+
+            .fun-zone {
+                min-height: 0;
+            }
+        }
+
+        @keyframes bgFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes drift {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+
+            50% {
+                transform: translateY(-24px) translateX(14px);
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes wiggle {
+            0% {
+                transform: rotate(0deg) scale(1.03);
+            }
+
+            25% {
+                transform: rotate(-5deg) scale(1.03);
+            }
+
+            50% {
+                transform: rotate(5deg) scale(1.05);
+            }
+
+            75% {
+                transform: rotate(-3deg) scale(1.03);
+            }
+
+            100% {
+                transform: rotate(0deg) scale(1.03);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ambient" aria-hidden="true">
+        <div class="blob one"></div>
+        <div class="blob two"></div>
+        <div class="blob three"></div>
+    </div>
+
+    <main class="page">
+        <section class="hero">
+            <h1>DevOps, But Make It Dramatic</h1>
+            <p class="lead">
+                DevOps brings developers and operations together to ship faster, safer, and with fewer 3AM panic calls.
+                Automation, CI/CD, and monitoring are the core trio that keeps releases smooth and teams calm.
+            </p>
+
+            <div class="cards">
+                <article class="card">
+                    <h2>Collaboration</h2>
+                    <p>Shared ownership means fewer handoff bottlenecks and better decisions across the delivery
+                        pipeline.</p>
+                </article>
+                <article class="card">
+                    <h2>Automation</h2>
+                    <p>From tests to deployments, automate the repetitive work so humans can solve higher-value
+                        problems.</p>
+                </article>
+                <article class="card">
+                    <h2>CI/CD</h2>
+                    <p>Merge often, test constantly, and deploy in smaller increments with confidence.</p>
+                </article>
+                <article class="card">
+                    <h2>Monitoring</h2>
+                    <p>Observe everything, learn quickly, and feed real-world insights back into development.</p>
+                </article>
+            </div>
+
+            <div class="tool-belt" aria-label="Popular DevOps tools">
+                <span class="pill">Git</span>
+                <span class="pill">Jenkins</span>
+                <span class="pill">Docker</span>
+                <span class="pill">Kubernetes</span>
+                <span class="pill">Ansible</span>
+                <span class="pill">Prometheus</span>
+            </div>
+
+            <div class="fun-zone">
+                <button id="funnyBtn" type="button">Do Not Press (Seriously)</button>
+                <div id="status" aria-live="polite"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const funnyBtn = document.getElementById("funnyBtn");
+        const statusEl = document.getElementById("status");
+        const funZone = document.querySelector(".fun-zone");
+
+        const lines = [
+            "Pipeline approved. Coffee deployment pending.",
+            "Build passed. Ego levels rising.",
+            "You clicked it. Incident ticket auto-created.",
+            "Kubernetes says: it works on my cluster.",
+            "Alert silenced. Chaos not guaranteed.",
+            "Release complete. Rollback button still nearby."
+        ];
+
+        function randomLine() {
+            const idx = Math.floor(Math.random() * lines.length);
+            return lines[idx];
+        }
+
+        function moveButtonInsideZone() {
+            if (window.innerWidth <= 780) {
+                return;
+            }
+
+            const zoneRect = funZone.getBoundingClientRect();
+            const btnRect = funnyBtn.getBoundingClientRect();
+
+            const maxX = Math.max(0, zoneRect.width - btnRect.width - 14);
+            const maxY = Math.max(0, zoneRect.height - btnRect.height - 14);
+
+            const nextX = Math.floor(Math.random() * maxX);
+            const nextY = Math.floor(Math.random() * maxY);
+
+            funnyBtn.style.left = nextX + "px";
+            funnyBtn.style.top = nextY + "px";
+        }
+
+        funnyBtn.addEventListener("mouseenter", () => {
+            moveButtonInsideZone();
+        });
+
+        funnyBtn.addEventListener("click", () => {
+            statusEl.textContent = randomLine();
+            funnyBtn.classList.remove("wiggle");
+            void funnyBtn.offsetWidth;
+            funnyBtn.classList.add("wiggle");
+            setTimeout(moveButtonInsideZone, 120);
+        });
+    </script>
+</body>
+
+</html>
